@@ -1,4 +1,5 @@
 import os
+import numpy as np
 import pandas as pd
 
 
@@ -36,6 +37,7 @@ def collect_country_data(country: str) -> pd.DataFrame:
         country_data[f"{stat}_{src}"] = df.loc[country].iloc[:-1]
     res = pd.DataFrame(country_data)
     res.index.name = "Year"
+    res.replace('--', np.nan, inplace=True)
     drop_if_exists(res, "Consumption_Total")
     drop_if_exists(res, "Production_Total")
     return res
