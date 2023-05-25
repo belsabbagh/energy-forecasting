@@ -23,7 +23,7 @@ def get_attr_from_filename(filename):
     return stat, src.split(".")[0]
 
 
-def collect_country_data(country) -> pd.DataFrame:
+def collect_country_data(country: str) -> pd.DataFrame:
     country_data = {}
     for name, df in file_iter():
         if country not in df.index:
@@ -32,7 +32,9 @@ def collect_country_data(country) -> pd.DataFrame:
         country_data[f"{stat}_{src}"] = df.loc[country].iloc[:-1]
     res = pd.DataFrame(country_data)
     res.index.name = "Year"
+    res.drop(["Consumption_Total", "Production_Total"], axis=1, inplace=True)
     return res
+
 
 def get_countries():
     countries = set()
@@ -40,7 +42,8 @@ def get_countries():
         countries.update(df.index)
     return countries
 
+
 if __name__ == "__main__":
     for country in get_countries():
         df = collect_country_data(country)
-        df.to_csv(path.join("data", "generated", f"{country}.csv"))
+        df.to_csv(path.join("data", "generated", f"{country.replace('/', '-')}.csv"))

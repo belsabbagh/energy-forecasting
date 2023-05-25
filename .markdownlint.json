@@ -1,0 +1,6 @@
+{
+    "MD013": false,
+    "no-duplicate-header": {
+        "siblings_only": true
+    }
+}
