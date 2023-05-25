@@ -6,7 +6,7 @@ CHARTS_PATH = path.join("out", "charts")
 
 for country, df in dataset_handler.country_iter():
     df.dropna()
-    df.plot()
+    df.plot().legend(fontsize=8, loc="upper right")
     plt.savefig(path.join(CHARTS_PATH, f"{country}.png"), dpi=300)
     plt.close()
     print(f"Visualized {country}")
