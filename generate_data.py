@@ -49,13 +49,7 @@ def get_countries():
 
 
 if __name__ == "__main__":
-    metadata = {}
     for country in get_countries():
         df = collect_country_data(country)
         df.to_csv(path.join("data", "generated", f"{country}.csv"))
         active_range = list(df.dropna(inplace=False).index)
-        metadata[country] = {
-            "StartDate": min(active_range, key=int),
-            "EndDate": max(active_range, key=int),
-        }
-    pd.DataFrame(metadata).T.to_csv(path.join("data", "metadata", "country_life.csv"))
