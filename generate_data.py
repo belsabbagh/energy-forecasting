@@ -58,4 +58,4 @@ if __name__ == "__main__":
             "StartDate": min(active_range, key=int),
             "EndDate": max(active_range, key=int),
         }
-    pd.DataFrame(metadata).to_csv(path.join("data", "metadata", "country_life.csv"))
+    pd.DataFrame(metadata).T.to_csv(path.join("data", "metadata", "country_life.csv"))

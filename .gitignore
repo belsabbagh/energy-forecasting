@@ -163,3 +163,4 @@ data/generated/*
 data/preprocessed/*
 data/evaluations/*
 data/charts/*
+data/metadata/*
