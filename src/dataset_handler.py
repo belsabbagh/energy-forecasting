@@ -8,7 +8,6 @@ DATASET_PATH = path.join("data", "generated")
 
 def get_country_data(country: str) -> pd.DataFrame:
     """It should return a dataframe with the data for the given country."""
-    # Replace / with - in country name
     raise NotImplementedError("get_country_data not implemented. Please implement it in dataset_handler.py")
 
 
