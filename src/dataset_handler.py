@@ -7,11 +7,17 @@ DATASET_PATH = path.join("data", "generated")
 
 
 def get_country_data(country: str) -> pd.DataFrame:
-    """It should return a dataframe with the data for the given country."""
-    raise NotImplementedError("get_country_data not implemented. Please implement it in dataset_handler.py")
+    csvpath = path.join(DATASET_PATH, f"{country}.csv")
+    df = pd.read_csv(csvpath, index_col="Year")
+    if df is None:
+        return None
+    df.index = df.index.astype(int)
+    return df
 
 
-
-def country_iter() -> tuple [str, pd.DataFrame]:
-    """It should return a generator that yields the name and dataset of each country in the dataset."""
-    raise NotImplementedError("country_iter not implemented. Please implement it in dataset_handler.py")
+def country_iter() -> tuple[str, pd.DataFrame]:
+    for filename in os.listdir(DATASET_PATH):
+        if not filename.endswith(".csv"):
+            continue
+        country = filename.rsplit(".", 1)[0]
+        yield country, get_country_data(country)

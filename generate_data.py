@@ -7,13 +7,12 @@ from os import path
 
 def file_iter():
     for folder in os.listdir("data"):
-        if path.isfile(path.join("data", folder)) or folder.startswith("generated"):
+        if folder not in ["Consumption_Data", "Production_Data"]:
             continue
         for filename in os.listdir(path.join("data", folder)):
             if not filename.endswith(".csv"):
                 continue
             df = pd.read_csv(path.join("data", folder, filename), index_col="Country")
-            df.index = df.index.str.strip()
             df.drop(columns=["Continent"], inplace=True)
             yield filename, df
 
@@ -50,6 +49,13 @@ def get_countries():
 
 
 if __name__ == "__main__":
+    metadata = {}
     for country in get_countries():
         df = collect_country_data(country)
         df.to_csv(path.join("data", "generated", f"{country}.csv"))
+        active_range = list(df.dropna(inplace=False).index)
+        metadata[country] = {
+            "StartDate": min(active_range, key=int),
+            "EndDate": max(active_range, key=int),
+        }
+    pd.DataFrame(metadata).to_csv(path.join("data", "metadata", "country_life.csv"))
