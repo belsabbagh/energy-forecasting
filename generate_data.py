@@ -34,7 +34,7 @@ def collect_country_data(country: str) -> pd.DataFrame:
         if country not in df.index:
             continue
         stat, src = get_attr_from_filename(name)
-        country_data[f"{stat}_{src}"] = df.loc[country].iloc[:-1]
+        country_data[f"{stat}_{src}"] = df.loc[country].iloc[:-1].fillna(0)
     res = pd.DataFrame(country_data)
     res.index.name = "Year"
     res.replace('--', np.nan, inplace=True)
