@@ -23,7 +23,11 @@ def file_iter():
         for filename in os.listdir(path.join("data", folder)):
             if not filename.endswith(".csv"):
                 continue
-            df = pd.read_csv(path.join("data", folder, filename), index_col="Country")
+            df = pd.read_csv(
+                path.join("data", folder, filename),
+                index_col="Country",
+                parse_dates=[0],
+            )
             df.drop(columns=["Continent"], inplace=True)
             yield filename, df
 
@@ -47,6 +51,7 @@ def collect_country_data(country: str) -> pd.DataFrame:
         country_data[f"{stat}_{src}"] = df.loc[country].iloc[:-1].fillna(0)
     res = pd.DataFrame(country_data)
     res.index.name = "Year"
+    res.index = pd.to_datetime(res.index, format="%Y")
     res.replace(["--", "ie"], np.nan, inplace=True)
     res = res.astype(float)
     drop_if_exists(res, "Consumption_Total")

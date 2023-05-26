@@ -8,10 +8,9 @@ DEFAULT_DIR = "generated"
 
 def get_country_data(country: str, directory=DEFAULT_DIR) -> pd.DataFrame:
     csvpath = path.join(DATA_PATH, directory, f"{country}.csv")
-    df = pd.read_csv(csvpath, index_col="Year")
+    df = pd.read_csv(csvpath, index_col="Year", parse_dates=[0])
     if df is None:
         return None
-    df.index = df.index.astype(int)
     return df
 
 
