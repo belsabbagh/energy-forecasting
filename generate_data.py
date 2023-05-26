@@ -6,6 +6,16 @@ import pandas as pd
 from os import path
 
 
+def clean_index(index):
+    return (
+        index.str.strip()
+        .str.replace("/", "-")
+        .str.replace("'", "-")
+        .str.replace("’", "-")
+        .str.replace("ô", "o")
+    )
+
+
 def file_iter():
     for folder in os.listdir("data"):
         if folder not in ["Consumption_Data", "Production_Data"]:
@@ -30,14 +40,15 @@ def collect_country_data(country: str) -> pd.DataFrame:
 
     country_data = {}
     for name, df in file_iter():
-        df.index = df.index.str.strip().str.replace("/", "-")
+        df.index = clean_index(df.index)
         if country not in df.index:
             continue
         stat, src = get_attr_from_filename(name)
         country_data[f"{stat}_{src}"] = df.loc[country].iloc[:-1].fillna(0)
     res = pd.DataFrame(country_data)
     res.index.name = "Year"
-    res.replace('--', np.nan, inplace=True)
+    res.replace(["--", "ie"], np.nan, inplace=True)
+    res = res.astype(float)
     drop_if_exists(res, "Consumption_Total")
     drop_if_exists(res, "Production_Total")
     return res
@@ -46,12 +57,13 @@ def collect_country_data(country: str) -> pd.DataFrame:
 def get_countries():
     countries = set()
     for _, df in file_iter():
-        countries.update(df.index.str.strip().str.replace("/", "-"))
+        countries.update(clean_index(df.index))
     return countries
 
 
 if __name__ == "__main__":
     for country in get_countries():
+        print(f"Generating {country}... ", end="")
         df = collect_country_data(country)
         df.to_csv(path.join("data", "generated", f"{country}.csv"))
-        active_range = list(df.dropna(inplace=False).index)
+        print(f"Generated {country}")

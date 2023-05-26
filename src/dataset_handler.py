@@ -1,13 +1,13 @@
-from os import path
-import os
+from os import path, listdir
 
 import pandas as pd
 
 DATA_PATH = path.join("data")
+DEFAULT_DIR = "generated"
 
 
-def get_country_data(country: str, directory="generated") -> pd.DataFrame:
-    csvpath = path.join("data", directory, f"{country}.csv")
+def get_country_data(country: str, directory=DEFAULT_DIR) -> pd.DataFrame:
+    csvpath = path.join(DATA_PATH, directory, f"{country}.csv")
     df = pd.read_csv(csvpath, index_col="Year")
     if df is None:
         return None
@@ -15,8 +15,8 @@ def get_country_data(country: str, directory="generated") -> pd.DataFrame:
     return df
 
 
-def country_iter(directory="generated") -> tuple[str, pd.DataFrame]:
-    for filename in os.listdir(path.join(DATA_PATH, directory)):
+def country_iter(directory=DEFAULT_DIR) -> tuple[str, pd.DataFrame]:
+    for filename in listdir(path.join(DATA_PATH, directory)):
         if not filename.endswith(".csv"):
             continue
         country = filename.rsplit(".", 1)[0]
