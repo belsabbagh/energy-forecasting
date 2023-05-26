@@ -6,7 +6,7 @@ CHARTS_PATH = path.join("out", "charts")
 
 for country, df in dataset_handler.country_iter():
     df.dropna()
-    plot = df.plot(ylim=(0,None))
+    plot = df.plot(ylim=(0, None))
     plot.set_ylabel("Energy (Quadrillion BTU)")
     plot.set_xlabel("Year")
     plot.legend(loc="upper right", fontsize=7)

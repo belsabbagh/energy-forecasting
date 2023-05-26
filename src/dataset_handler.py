@@ -3,11 +3,11 @@ import os
 
 import pandas as pd
 
-DATASET_PATH = path.join("data", "generated")
+DATA_PATH = path.join("data")
 
 
-def get_country_data(country: str) -> pd.DataFrame:
-    csvpath = path.join(DATASET_PATH, f"{country}.csv")
+def get_country_data(country: str, directory="generated") -> pd.DataFrame:
+    csvpath = path.join("data", directory, f"{country}.csv")
     df = pd.read_csv(csvpath, index_col="Year")
     if df is None:
         return None
@@ -15,8 +15,8 @@ def get_country_data(country: str) -> pd.DataFrame:
     return df
 
 
-def country_iter() -> tuple[str, pd.DataFrame]:
-    for filename in os.listdir(DATASET_PATH):
+def country_iter(directory="generated") -> tuple[str, pd.DataFrame]:
+    for filename in os.listdir(path.join(DATA_PATH, directory)):
         if not filename.endswith(".csv"):
             continue
         country = filename.rsplit(".", 1)[0]
