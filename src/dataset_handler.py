@@ -19,4 +19,8 @@ def country_iter(directory=DEFAULT_DIR) -> tuple[str, pd.DataFrame]:
         if not filename.endswith(".csv"):
             continue
         country = filename.rsplit(".", 1)[0]
-        yield country, get_country_data(country)
+        yield country, get_country_data(country, directory)
+
+
+def get_former_countries():
+    return [country for country, df in country_iter() if df.iloc[-1].isna().any()]
