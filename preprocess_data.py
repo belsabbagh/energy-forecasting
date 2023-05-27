@@ -89,7 +89,7 @@ dictionary = {
         "parents": ["Former Yugoslavia", "Former Serbia and Montenegro", "Serbia"],
     },
     "Kyrgyzstan": {"function": ussr, "parents": ["Former U.S.S.R."]},
-    "Latvia": {"function": add_parent, "parents": ["Former U.S.S.R."]},
+    "Latvia": {"function": ussr, "parents": ["Former U.S.S.R."]},
     "Lithuania": {"function": ussr, "parents": ["Former U.S.S.R."]},
     "Moldova": {"function": ussr, "parents": ["Former U.S.S.R."]},
     "Montenegro": {
