@@ -14,8 +14,8 @@ for country, df in country_iter(directory="preprocessed"):
         series = df[column]
         train_data, test_data = series.iloc[:30], series.iloc[30:]
         model = ARIMA(
-            train_data, order=(1, 1, 1), freq="AS-JAN"
-        )  # Replace p, d, q with appropriate values
+            train_data, order=(3, 2, 3), freq="AS-JAN"
+        )  
 
         # Fit the model to the training data
         model_fit = model.fit()

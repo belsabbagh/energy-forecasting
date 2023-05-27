@@ -9,7 +9,7 @@ warnings.filterwarnings("ignore")
 
 results = pd.DataFrame({"Country": [], "Resource": [], "mse": [], "rmse": []})
 for country, df in country_iter(directory="preprocessed"):
-    print(f"ARIMA: Evaluating {country}... ", end="")
+    print(f"ES: Evaluating {country}... ", end="")
     for column in df.columns:
         series = df[column]
         train_data, test_data = series.iloc[:30], series.iloc[30:]
