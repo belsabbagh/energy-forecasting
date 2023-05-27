@@ -1,6 +1,6 @@
 import warnings
 import pandas as pd
-from statsmodels.tsa.arima.model import ARIMA
+from statsmodels.tsa.exponential_smoothing.ets import ETSModel
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 from src.dataset_handler import country_iter
@@ -13,9 +13,14 @@ for country, df in country_iter(directory="preprocessed"):
     for column in df.columns:
         series = df[column]
         train_data, test_data = series.iloc[:30], series.iloc[30:]
-        model = ARIMA(
-            train_data, order=(1, 1, 1), freq="AS-JAN"
-        )  # Replace p, d, q with appropriate values
+        model = ETSModel(
+            train_data,
+            error="add",
+            trend="add",
+            seasonal="add",
+            seasonal_periods=5,
+            freq="AS-JAN",
+        )
 
         # Fit the model to the training data
         model_fit = model.fit()
@@ -36,4 +41,4 @@ for country, df in country_iter(directory="preprocessed"):
         )
         results = pd.concat([results, res])
     print(f"Done.")
-results.to_csv(f"out/test_results/arima_eval.csv")
+results.to_csv(f"out/test_results/es_eval.csv")
